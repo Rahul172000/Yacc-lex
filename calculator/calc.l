@@ -1,0 +1,28 @@
+%option noyywrap
+%{
+	#include <stdio.h>
+	#include "y.tab.h"
+	int c;
+	extern int yylval;
+%}
+binary_op	("+"|"-"|"*"|"/")
+lb	[\n]
+
+%%
+
+" "	;
+
+[0-9]+	{
+	c=atoi(yytext);
+	yylval=c;
+	return(NUMBER);
+	}
+
+{binary_op}|{lb}			{
+					c=yytext[0];
+					return(c);
+					}
+
+(.)	{printf("IGNORED:%s\n",yytext);}
+
+%%
